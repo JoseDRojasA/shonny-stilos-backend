@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
 import com.shonny.backend.model.AppUserDTO;
 
 @Entity
@@ -77,5 +79,11 @@ public class AppUser implements Serializable {
 			appUserDTO.setPerson(person.toDTO());
 		}
 		return appUserDTO;
+	}
+
+	public static AppUser fromDTO(AppUserDTO userDTO) {
+		AppUser user = new AppUser();
+		BeanUtils.copyProperties(user, userDTO);
+		return user;
 	}
 }

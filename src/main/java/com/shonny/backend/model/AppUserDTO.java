@@ -1,9 +1,14 @@
 package com.shonny.backend.model;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.entity.AppUser;
+
 public class AppUserDTO {
 	
 	private Integer id;
 	private String username;
+	private String password;
 	private String telephone;
 	private PersonDTO person;
 
@@ -38,5 +43,18 @@ public class AppUserDTO {
 	public void setPerson(PersonDTO person) {
 		this.person = person;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
+	public AppUser toEntity() {
+		AppUser appUser = new AppUser();
+		BeanUtils.copyProperties(appUser, this);
+		return appUser;
+	}
 }
