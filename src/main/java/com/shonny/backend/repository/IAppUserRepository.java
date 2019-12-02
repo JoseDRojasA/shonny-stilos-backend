@@ -12,7 +12,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Integer> {
 
 	Optional<AppUser> findByUsername(String username);
 
-	Optional<AppUser> findByEmail(String email);
+	Optional<AppUser> findByPersonEmail(String email);
 
 	Optional<AppUser> findByUsernameIgnoreCase(String username);
 
