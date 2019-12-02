@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
 import com.shonny.backend.model.PersonDTO;
 
 @Entity
@@ -25,7 +27,7 @@ public class Person implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "last_name")
+	@Column(name = "lastName")
 	private String lastName;
 	
 	@Column(name = "email", unique = true)
@@ -36,6 +38,12 @@ public class Person implements Serializable {
 	
 	@Column(name = "birthdate")
 	private LocalDate birthdate;
+	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "allergies")
+	private String allergies;
 
 	public String getId() {
 		return id;
@@ -77,14 +85,33 @@ public class Person implements Serializable {
 		this.telephone = telephone;
 	}
 	
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getAllergies() {
+		return allergies;
+	}
+
+	public void setAllergies(String allergies) {
+		this.allergies = allergies;
+	}
+
 	public PersonDTO toDTO() {
 		PersonDTO personDTO = new PersonDTO();
-		personDTO.setEmail(email);
-		personDTO.setId(id);
-		personDTO.setLastName(lastName);
-		personDTO.setName(lastName);
-		personDTO.setTelephone(telephone);
-		personDTO.setBirthdate(birthdate);
+		BeanUtils.copyProperties(personDTO, this);
 		return personDTO;
 	}
 	

@@ -34,7 +34,6 @@ public class AppUserController {
 	private static final String EMAIL_REQUIRED = "Correo requerido.";
 	private static final String NAME_REQUIRED = "Nombre requerido.";
 	private static final String PERSON_REQUIRED = "Información personal requerida.";
-	
 	private static final String INVALID_EMAIL = "Correo invalido.";
 	
 	@PostMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +59,7 @@ public class AppUserController {
 		return new ResponseEntity<>(service.editUser(userDTO.toEntity(), idUser), HttpStatus.OK);
 	}
 	
-	@PutMapping(path = "/password/{idUser}", consumes = "application/json", produces = "application/json")
+	@PutMapping(path = "/password/{idUser}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDTO> changePass(@RequestBody final AppUserPassDTO passDTO,
 			@PathVariable final int idUser) throws Exception {
 		Assert.hasText(passDTO.getOldPass(), PASSWORD_REQUIRED);
@@ -69,7 +68,7 @@ public class AppUserController {
 		return new ResponseEntity<>(service.changePass(passDTO, idUser), HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/authentication", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AppUserDTO> authenticate(@RequestBody final AppUserDTO userDTO, HttpSession session) throws Exception {
 		Assert.hasText(userDTO.getUsername(), USERNAME_REQUIRED);
 		Assert.hasText(userDTO.getPassword(), PASSWORD_REQUIRED);

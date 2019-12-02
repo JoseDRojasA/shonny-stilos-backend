@@ -9,6 +9,8 @@ public class PersonDTO {
 	private String email;
 	private String telephone;
 	private LocalDate birthdate;
+	private String address;
+	private String allergies;
 	
 	public String getId() {
 		return id;
@@ -46,5 +48,16 @@ public class PersonDTO {
 	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
-	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getAllergies() {
+		return allergies;
+	}
+	public void setAllergies(String allergies) {
+		this.allergies = allergies;
+	}
 }
