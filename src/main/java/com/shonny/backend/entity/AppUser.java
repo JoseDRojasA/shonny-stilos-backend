@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,19 +26,22 @@ public class AppUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_app_user")
 	private Integer id;
 	
-	@Column(name="username", nullable = true, unique = true)
+	@Column(name="username", nullable = false, unique = true)
 	private String username;
 	
-	@Column(name="password", nullable = true)
+	@Column(name="password", nullable = false)
 	private String password;
 	
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "id_person")
 	private Person person;
+	
+	@Column(name="is_admin")
+	private boolean isAdmin;
 
 	public Integer getId() {
 		return id;
@@ -71,6 +75,14 @@ public class AppUser implements Serializable {
 		this.person = person;
 	}
 
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public AppUserDTO toDTO() {
 		AppUserDTO appUserDTO = new AppUserDTO();
 		appUserDTO.setId(id);
@@ -78,6 +90,7 @@ public class AppUser implements Serializable {
 		if (person != null) {
 			appUserDTO.setPerson(person.toDTO());
 		}
+		appUserDTO.setIsAdmin(isAdmin);
 		return appUserDTO;
 	}
 

@@ -13,7 +13,7 @@
 	<version>0.0.1</version>
 	<name>backend</name>
 	<description>Shonny stilos backend</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

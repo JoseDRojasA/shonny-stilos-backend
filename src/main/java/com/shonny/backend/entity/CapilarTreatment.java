@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class CapilarTreatment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_capilar_treatment")
 	private Long id;
 	
@@ -36,11 +37,15 @@ public class CapilarTreatment implements Serializable {
 	private String notes;
 	
 	@ManyToOne(cascade = {CascadeType.MERGE})
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "id_type", nullable = false)
 	private CapilarTreatmentType type;
 	
-	@Column(name="value")
+	@Column(name="value", nullable = false)
 	private Long value;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "id_client", nullable = false)
+	private Client client;
 
 	public Long getId() {
 		return id;

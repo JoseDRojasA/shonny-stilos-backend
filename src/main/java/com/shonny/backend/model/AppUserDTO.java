@@ -10,6 +10,7 @@ public class AppUserDTO {
 	private String username;
 	private String password;
 	private String telephone;
+	private Boolean isAdmin;
 	private PersonDTO person;
 
 	public Integer getId() {
@@ -56,5 +57,13 @@ public class AppUserDTO {
 		AppUser appUser = new AppUser();
 		BeanUtils.copyProperties(appUser, this);
 		return appUser;
+	}
+
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

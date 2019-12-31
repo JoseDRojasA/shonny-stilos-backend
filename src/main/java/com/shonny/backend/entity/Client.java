@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
@@ -18,16 +21,19 @@ import javax.persistence.Table;
 public class Client implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_client")
+	private Long id;
+	
 	@OneToOne
-	@JoinColumn(name = "id_person")
+	@JoinColumn(name = "id_person", nullable = false)
 	private Person person;
 	
 	@Column(name = "white_percentage")
 	private Integer whitePercentage;
 	
-	@OneToMany(mappedBy = "id")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
 	private List<CapilarTreatment> capilarTreatment;
 
 	public Person getPerson() {
