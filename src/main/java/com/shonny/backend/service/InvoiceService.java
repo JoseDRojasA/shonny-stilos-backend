@@ -1,10 +1,9 @@
 package com.shonny.backend.service;
 
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.shonny.backend.entity.Invoice;
 import com.shonny.backend.entity.InvoiceProductKey;
 import com.shonny.backend.model.InvoiceDTO;
+import com.shonny.backend.model.PaginationDTO;
 import com.shonny.backend.repository.IInvoiceProductRepository;
 import com.shonny.backend.repository.IInvoiceRepository;
 
@@ -28,28 +28,23 @@ public class InvoiceService implements IInvoiceService {
 	private IInvoiceProductRepository invoiceProductRepository;
 
 	@Override
-	public List<InvoiceDTO> findInvoices(String sort, String order, Integer pageSize, Integer page, String search) {
-		List<Invoice> invoices;
-
-		if (sort == null) {
-			Sort sortBy = Sort.by("date").descending();
-			invoices = StreamSupport.stream(repository.findAll(sortBy).spliterator(), false)
-				    .collect(Collectors.toList());
-		} else {
-			Sort sortBy = Sort.by(sort).descending();
-			if ("1".equals(order)) {
-				sortBy = sortBy.ascending();
-			}
-			Pageable pageable = PageRequest.of(page - 1, pageSize, sortBy);
-
-			if (StringUtils.isEmpty(search)) {
-				invoices= repository.findAll(pageable).toList();
-			} else {
-				invoices = repository.findAllBySearch(search, pageable).toList();
-			}
+	public PaginationDTO findInvoices(String sort, String order, Integer pageSize, Integer page, String search) {
+		PaginationDTO pagination = new PaginationDTO();
+		Page<Invoice> invoices;
+		Sort sortBy = Sort.by(sort).descending();
+		if ("1".equals(order)) {
+			sortBy = sortBy.ascending();
 		}
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sortBy);
 
-		return invoices.parallelStream().map(Invoice::toDTO).collect(Collectors.toList());
+		if (StringUtils.isEmpty(search)) {
+			invoices= repository.findAll(pageable);
+		} else {
+			invoices = repository.findAllBySearch(search, pageable);
+		}
+		pagination.setElements(invoices.toList().parallelStream().map(Invoice::toDTO).collect(Collectors.toList()));
+		pagination.setCount(invoices.getNumberOfElements());
+		return pagination;
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.shonny.backend.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.SaleDTO;
+import com.shonny.backend.model.SaleProductDTO;
 
 @Entity
 @Table(name = "sale")
@@ -28,10 +39,17 @@ public class Sale implements Serializable  {
 	@Column(name = "client_name")
 	private String clientName;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date date;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_client")
 	private Client client;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, mappedBy = "sale")
+	private List<SaleProduct> saleProducts;
+	
 	public Long getId() {
 		return id;
 	}
@@ -54,6 +72,51 @@ public class Sale implements Serializable  {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public List<SaleProduct> getSaleProducts() {
+		return saleProducts;
+	}
+
+	public void setSaleProducts(List<SaleProduct> saleProducts) {
+		this.saleProducts = saleProducts;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public SaleDTO toDTO() {
+		SaleDTO saleDTO = new SaleDTO();
+		BeanUtils.copyProperties(this, saleDTO);
+		if (client != null) {
+			saleDTO.setClient(client.toDTO());
+		}
+		if (saleProducts != null) {
+			List<SaleProductDTO> saleProducts = getSaleProducts()
+					.parallelStream()
+					.map(SaleProduct::toDTO)
+					.collect(Collectors.toList());
+			saleDTO.setSaleProducts(saleProducts);
+		}
+		return saleDTO;
+	}
+
+	public static Sale fromDTO(SaleDTO saleDTO) {
+		Sale sale = new Sale();
+		BeanUtils.copyProperties(saleDTO, sale);
+		if (saleDTO.getClient() != null) {
+			sale.setClient(Client.fromDTO(saleDTO.getClient()));
+		}
+		if (saleDTO.getSaleProducts() != null) {
+			List<SaleProduct> saleProducts = saleDTO.getSaleProducts().parallelStream().map(SaleProduct::fromDTO).collect(Collectors.toList());
+			sale.setSaleProducts(saleProducts);
+		}
+		return sale;
 	}
 	
 }

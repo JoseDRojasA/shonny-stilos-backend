@@ -40,7 +40,7 @@ public interface IInvoiceRepository extends PagingAndSortingRepository<Invoice, 
 	public void deleteInvoice(@Param("idInvoice") final Long idInvoice);
 	
 	@Query(value = "SELECT * FROM invoice WHERE CAST ( date as VARCHAR ) LIKE %:search% OR serial LIKE %:search% OR id_provider IN (SELECT id_provider FROM provider WHERE name LIKE %:search%) ", 
-			countQuery = "SELECT * FROM invoice WHERE CAST ( date as VARCHAR ) LIKE %:search% OR serial LIKE %:search% OR id_provider IN (SELECT id_provider FROM provider WHERE name LIKE %:search%)",
+			countQuery = "SELECT count(*) FROM invoice WHERE CAST ( date as VARCHAR ) LIKE %:search% OR serial LIKE %:search% OR id_provider IN (SELECT id_provider FROM provider WHERE name LIKE %:search%)",
 			  nativeQuery = true
 			  )
 	public Page<Invoice> findAllBySearch(@Param("search") final String search, final Pageable pageable);

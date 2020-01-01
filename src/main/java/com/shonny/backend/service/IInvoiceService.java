@@ -1,12 +1,11 @@
 package com.shonny.backend.service;
 
-import java.util.List;
-
 import com.shonny.backend.model.InvoiceDTO;
+import com.shonny.backend.model.PaginationDTO;
 
 public interface IInvoiceService {
 
-	public List<InvoiceDTO> findInvoices(String sort, String order, Integer pageSize, Integer page, String search);
+	public PaginationDTO findInvoices(String sort, String order, Integer pageSize, Integer page, String search);
 
 	public InvoiceDTO findInvoiceById(Long id);
 

@@ -3,7 +3,7 @@ package com.shonny.backend.model;
 import java.util.List;
 
 public class ClientDTO {
-	
+	private Long id;
 	private PersonDTO person;
 	private Integer whitePercentage;
 	private List<CapilarTreatmentDTO> capilarTreatment;
@@ -25,5 +25,11 @@ public class ClientDTO {
 	}
 	public void setCapilarTreatment(List<CapilarTreatmentDTO> capilarTreatment) {
 		this.capilarTreatment = capilarTreatment;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

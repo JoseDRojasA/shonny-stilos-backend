@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.SaleProductKeyDTO;
+
 public class SaleProductKey implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -28,5 +32,17 @@ public class SaleProductKey implements Serializable  {
 
 	public void setProduct(Long product) {
 		this.product = product;
+	}
+	
+	public static SaleProductKey fromDTO(SaleProductKeyDTO saleProductDTO) {
+		SaleProductKey saleProductKey = new SaleProductKey();
+		BeanUtils.copyProperties(saleProductDTO, saleProductKey);
+		return saleProductKey;
+	}
+	
+	public SaleProductKeyDTO toDTO() {
+		SaleProductKeyDTO saleProductKeyDTO = new SaleProductKeyDTO();
+		BeanUtils.copyProperties(this, saleProductKeyDTO);
+		return saleProductKeyDTO;
 	}
 }

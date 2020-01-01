@@ -15,6 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.ClientDTO;
+
 @Entity
 @Table(name = "client")
 @NamedQuery(name = "Client.findAll", query = "SELECT a FROM Client a")
@@ -60,4 +64,18 @@ public class Client implements Serializable{
 	public void setCapilarTreatment(List<CapilarTreatment> capilarTreatment) {
 		this.capilarTreatment = capilarTreatment;
 	}
+
+	public static Client fromDTO(ClientDTO clientDTO) {
+		Client client = new Client();
+		BeanUtils.copyProperties(clientDTO, client);
+		return client;
+	}
+
+	public ClientDTO toDTO() {
+		ClientDTO clientDTO = new ClientDTO();
+		BeanUtils.copyProperties(this, clientDTO);
+		return clientDTO;
+	}
+	
+	
 }

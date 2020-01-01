@@ -1,7 +1,5 @@
 package com.shonny.backend.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shonny.backend.model.InvoiceDTO;
+import com.shonny.backend.model.PaginationDTO;
 import com.shonny.backend.model.ResponseDTO;
 import com.shonny.backend.service.IInvoiceService;
 
@@ -36,13 +35,13 @@ public class InvoiceController {
 
 	
 	@GetMapping(path="/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<InvoiceDTO>> findInvoices(
+	public ResponseEntity<PaginationDTO> findInvoices(
 			@RequestParam(required = false) final String sort,
 			@RequestParam(required = false) final String order, 
 			@RequestParam(required = false) final Integer page, 
 			@RequestParam(required = false) final Integer pageSize,
 			@RequestParam(required = false) final String search) {
-		return new ResponseEntity<List<InvoiceDTO>>(service.findInvoices(sort, order, pageSize, page, search), HttpStatus.OK);
+		return new ResponseEntity<PaginationDTO>(service.findInvoices(sort, order, pageSize, page, search), HttpStatus.OK);
 	}
 	
 	

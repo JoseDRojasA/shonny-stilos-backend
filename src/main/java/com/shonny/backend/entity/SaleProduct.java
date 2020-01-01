@@ -11,6 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import org.springframework.beans.BeanUtils;
+import com.shonny.backend.model.SaleProductDTO;
+
 @Entity
 @Table(name = "sale_product")
 @NamedQuery(name = "SaleProduct.findAll", query = "SELECT a FROM SaleProduct a")
@@ -22,12 +26,12 @@ public class SaleProduct implements Serializable  {
 	private SaleProductKey id;
 	
     @MapsId("id_sale")
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_sale")
 	private Sale sale;
     
     @MapsId("id_product")
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_product", nullable = false)
 	private Product product;
     
@@ -84,5 +88,29 @@ public class SaleProduct implements Serializable  {
 	}
 	public void setBuyPrice(Long buyPrice) {
 		this.buyPrice = buyPrice;
+	}
+	
+	public static SaleProduct fromDTO(SaleProductDTO saleProductDTO) {
+		SaleProduct saleProduct = new SaleProduct();
+		BeanUtils.copyProperties(saleProductDTO, saleProduct);
+		if (saleProductDTO.getId() != null) {
+			saleProduct.setId(SaleProductKey.fromDTO(saleProductDTO.getId()));
+		}
+		if (saleProductDTO.getProduct() != null) {
+			saleProduct.setProduct(Product.fromDTO(saleProductDTO.getProduct()));
+		}
+		if (saleProductDTO.getSale() != null) {
+			saleProduct.setSale(Sale.fromDTO(saleProductDTO.getSale()));
+		}
+		return saleProduct;
+	}
+	
+	public SaleProductDTO toDTO() {
+		SaleProductDTO saleProductDTO = new SaleProductDTO();
+		BeanUtils.copyProperties(this, saleProductDTO);
+		if (id != null) {
+			saleProductDTO.setId(id.toDTO());
+		}
+		return saleProductDTO;
 	}
 }

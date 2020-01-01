@@ -97,7 +97,13 @@ public class Invoice implements Serializable {
 		if (provider != null) {
 			invoiceDTO.setProvider(provider.toDTO());
 		}
-		loadListsDTO(this, invoiceDTO);
+		if (getInvoiceProducts() != null) {
+			List<InvoiceProductDTO> invoiceProducts = getInvoiceProducts()
+					.parallelStream()
+					.map(InvoiceProduct::toDTO)
+					.collect(Collectors.toList());
+			invoiceDTO.setInvoiceProducts(invoiceProducts);
+		}
 		return invoiceDTO;
 	}
 
@@ -108,20 +114,11 @@ public class Invoice implements Serializable {
 			invoice.setProvider(Provider.fromDTO(invoiceDTO.getProvider()));
 		}
 		List<InvoiceProductDTO> invoiceProductsDTO = invoiceDTO.getInvoiceProducts();
-		if (invoiceProductsDTO != null && invoiceProductsDTO.size() > 0) {
+		if (invoiceProductsDTO != null) {
 			List<InvoiceProduct> invoiceProducts = invoiceProductsDTO.parallelStream().map(InvoiceProduct::fromDTO).collect(Collectors.toList());
 			invoice.setInvoiceProducts(invoiceProducts);
 		}
 		return invoice;
 	}
 	
-	public static void loadListsDTO(Invoice invoice, InvoiceDTO invoiceDTO) {
-		if (invoice.getInvoiceProducts() != null) {
-			List<InvoiceProductDTO> invoiceProducts = invoice.getInvoiceProducts()
-					.parallelStream()
-					.map(InvoiceProduct::toDTO)
-					.collect(Collectors.toList());
-			invoiceDTO.setInvoiceProducts(invoiceProducts);
-		}
-	}
 }
