@@ -31,6 +31,9 @@ public class SaleProduct implements Serializable  {
 	@JoinColumn(name = "id_product", nullable = false)
 	private Product product;
     
+	@Column(name="buy_price", nullable = false)
+	private Long buyPrice;
+    
 	@Column(nullable = false)
 	private Long price;
 	
@@ -75,5 +78,11 @@ public class SaleProduct implements Serializable  {
 	}
 	public void setDiscount(Long discount) {
 		this.discount = discount;
+	}
+	public Long getBuyPrice() {
+		return buyPrice;
+	}
+	public void setBuyPrice(Long buyPrice) {
+		this.buyPrice = buyPrice;
 	}
 }

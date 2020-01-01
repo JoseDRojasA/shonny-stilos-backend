@@ -13,5 +13,5 @@ public interface IProductService {
 
 	public void deleteProduct(Long id);
 
-	public ProductDTO saveProduct(ProductDTO productDTO);
+	public ProductDTO saveProduct(ProductDTO productDTO) throws Exception;
 }

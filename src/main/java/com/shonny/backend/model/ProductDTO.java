@@ -3,6 +3,7 @@ package com.shonny.backend.model;
 public class ProductDTO {
 	private Long id;
 	private String name;
+	private Long buyPrice;
 	private Long price;
 	private Integer amount;
 	private Integer minAmount;
@@ -56,6 +57,12 @@ public class ProductDTO {
 	}
 	public void setProvider(ProviderDTO provider) {
 		this.provider = provider;
+	}
+	public Long getBuyPrice() {
+		return buyPrice;
+	}
+	public void setBuyPrice(Long buyPrice) {
+		this.buyPrice = buyPrice;
 	}
 	
 }

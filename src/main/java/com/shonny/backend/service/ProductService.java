@@ -51,7 +51,10 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-	public ProductDTO saveProduct(ProductDTO productDTO) {
+	public ProductDTO saveProduct(ProductDTO productDTO) throws Exception {
+		if (productDTO.getPrice() < productDTO.getBuyPrice()) {
+			throw new Exception("El precio de venta no puede ser menor al precio de compra");
+		}
 		Product product = Product.fromDTO(productDTO);
 		repository.save(product);
 		return product.toDTO();

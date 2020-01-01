@@ -34,6 +34,9 @@ public class Product implements Serializable {
 	@Column(nullable = false)
 	private String name;
 	
+	@Column(name="buy_price", nullable = false)
+	private Long buyPrice;
+	
 	@Column(nullable = false)
 	private Long price;
 	
@@ -46,11 +49,11 @@ public class Product implements Serializable {
 	@Column(nullable = false)
 	private Boolean active;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_brand", nullable = false)
 	private Brand brand;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_provider", nullable = false)
 	private Provider provider;
 	
@@ -128,16 +131,40 @@ public class Product implements Serializable {
 	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
+
+	public Long getBuyPrice() {
+		return buyPrice;
+	}
+
+	public void setBuyPrice(Long buyPrice) {
+		this.buyPrice = buyPrice;
+	}
 	
 	public ProductDTO toDTO() {
 		ProductDTO productDTO = new ProductDTO();
 		BeanUtils.copyProperties(this, productDTO);
+		if (brand != null) {
+			productDTO.setBrand(brand.toDTO());
+		}
+		if (provider != null) {
+			productDTO.setProvider(provider.toDTO());
+		}
 		return productDTO;
 	}
 	
 	public static Product fromDTO(ProductDTO productDTO) {
 		Product product = new Product();
 		BeanUtils.copyProperties(productDTO, product);
+		if (productDTO.getBrand() != null) {
+			Brand brand = new Brand();
+			BeanUtils.copyProperties(productDTO.getBrand(), brand);
+			product.setBrand(brand);
+		}
+		if (productDTO.getProvider() != null) {
+			Provider provider = new Provider();
+			BeanUtils.copyProperties(productDTO.getProvider(), provider);
+			product.setProvider(provider);
+		}
 		return product;
 	}
 }
