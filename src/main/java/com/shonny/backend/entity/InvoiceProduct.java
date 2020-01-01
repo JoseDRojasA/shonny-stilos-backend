@@ -12,6 +12,10 @@ import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.InvoiceProductDTO;
+
 @Entity
 @Table(name = "invoice_product")
 @NamedQuery(name = "InvoiceProduct.findAll", query = "SELECT a FROM InvoiceProduct a")
@@ -31,6 +35,9 @@ public class InvoiceProduct implements Serializable {
 	@ManyToOne(cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "id_product", nullable = false)
 	private Product product;
+    
+	@Column(name = "buy_price_per_unit", nullable = false)
+	private Long buyPricePerUnit;
 	
 	@Column(name = "price_per_unit", nullable = false)
 	private Long pricePerUnit;
@@ -68,5 +75,19 @@ public class InvoiceProduct implements Serializable {
 	public void setId(InvoiceProductKey id) {
 		this.id = id;
 	}
+	public Long getBuyPricePerUnit() {
+		return buyPricePerUnit;
+	}
+	public void setBuyPricePerUnit(Long buyPricePerUnit) {
+		this.buyPricePerUnit = buyPricePerUnit;
+	}
 	
+	public static InvoiceProduct fromDTO(InvoiceProductDTO invoiceProductoDTO) {
+		InvoiceProduct invoiceProduct = new InvoiceProduct();
+		BeanUtils.copyProperties(invoiceProductoDTO, invoiceProduct);
+		if (invoiceProductoDTO.getId() != null) {
+			invoiceProduct.setId(InvoiceProductKey.fromDTO(invoiceProductoDTO.getId()));
+		}
+		return invoiceProduct;
+	}
 }

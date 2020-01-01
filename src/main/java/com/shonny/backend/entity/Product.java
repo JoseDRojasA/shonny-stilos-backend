@@ -26,12 +26,25 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_product")
 	private Long id;
+	
 	@Column(nullable = false)
 	private String name;
+	
 	@Column(nullable = false)
 	private Long price;
+	
 	@Column(nullable = false)
 	private Integer amount;
+	
+	@Column(name="min_amount", nullable = false)
+	private Integer minAmount;
+	
+	@Column(nullable = false)
+	private Boolean active;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "id_brand", nullable = false)
+	private Brand brand;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
 	@JoinColumn(name = "id_provider", nullable = false)
@@ -86,5 +99,29 @@ public class Product implements Serializable {
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;
+	}
+
+	public Integer getMinAmount() {
+		return minAmount;
+	}
+
+	public void setMinAmount(Integer minAmount) {
+		this.minAmount = minAmount;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 }

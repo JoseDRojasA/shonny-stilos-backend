@@ -45,7 +45,7 @@ public class AppUserController {
 		Assert.hasText(userDTO.getPerson().getName(), NAME_REQUIRED);
 		Assert.isTrue(EmailUtils.emailValid(userDTO.getPerson().getEmail()), INVALID_EMAIL);
 
-		return new ResponseEntity<>(service.registerUser(AppUser.fromDTO(userDTO), session.getId()), HttpStatus.CREATED);
+		return new ResponseEntity<>(service.registerUser(AppUser.fromDTO(userDTO)), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(path = "/user/{idUser}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

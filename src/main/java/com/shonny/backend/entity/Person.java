@@ -111,7 +111,7 @@ public class Person implements Serializable {
 
 	public PersonDTO toDTO() {
 		PersonDTO personDTO = new PersonDTO();
-		BeanUtils.copyProperties(personDTO, this);
+		BeanUtils.copyProperties(this, personDTO);
 		return personDTO;
 	}
 	

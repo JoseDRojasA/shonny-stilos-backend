@@ -6,7 +6,7 @@ import com.shonny.backend.model.AppUserPassDTO;
 import com.shonny.backend.model.ResponseDTO;
 
 public interface IAppUserService {
-	AppUserDTO registerUser(AppUser user, String sessionId) throws Exception;
+	AppUserDTO registerUser(AppUser user) throws Exception;
 
 	AppUserDTO editUser(AppUser user, Integer userId) throws Exception;
 

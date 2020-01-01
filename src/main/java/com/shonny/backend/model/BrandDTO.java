@@ -1,12 +1,13 @@
 package com.shonny.backend.model;
 
-public class CapilarTreatmentTypeDTO {
-	private Long id;
+public class BrandDTO {
+	private Integer id;
 	private String name;
-	public Long getId() {
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -15,4 +16,5 @@ public class CapilarTreatmentTypeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 }

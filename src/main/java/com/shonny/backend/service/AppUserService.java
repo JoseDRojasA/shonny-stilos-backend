@@ -13,6 +13,7 @@ import com.shonny.backend.model.AppUserDTO;
 import com.shonny.backend.model.AppUserPassDTO;
 import com.shonny.backend.model.ResponseDTO;
 import com.shonny.backend.repository.IAppUserRepository;
+import com.shonny.backend.repository.IPersonRepository;
 import com.shonny.backend.utils.Utils;
 
 @Service
@@ -22,12 +23,18 @@ public class AppUserService implements IAppUserService {
 	@Autowired
 	private IAppUserRepository repository;
 	
+	@Autowired
+	private IPersonRepository personRepository;
+	
 	@Override
-	public AppUserDTO registerUser(AppUser user, String sessionId) throws Exception {
+	@Transactional
+	public AppUserDTO registerUser(AppUser user) throws Exception {
 		try {
 			user.setPassword(Utils.hashPassword(user.getPassword()));
+			personRepository.saveAndFlush(user.getPerson());
 			repository.save(user);
-			return user.toDTO();
+			AppUserDTO response = user.toDTO();
+			return response;
 		} catch (final Exception e) {
 			LOGGER.error("El usuario no pudo ser registrado.", e);
 			throw new Exception("El usuario no pudo ser registrado: " + e.getMessage(), e);

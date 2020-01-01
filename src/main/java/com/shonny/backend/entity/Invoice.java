@@ -3,6 +3,7 @@ package com.shonny.backend.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.InvoiceDTO;
+import com.shonny.backend.model.InvoiceProductDTO;
 
 @Entity
 @Table(name = "invoice")
@@ -84,5 +90,21 @@ public class Invoice implements Serializable {
 	public void setSerial(String serial) {
 		this.serial = serial;
 	}
+	
+	public InvoiceDTO toDTO() {
+		InvoiceDTO invoiceDTO = new InvoiceDTO();
+		BeanUtils.copyProperties(this, invoiceDTO);
+		return invoiceDTO;
+	}
 
+	public static Invoice fromDTO(InvoiceDTO invoiceDTO) {
+		Invoice invoice = new Invoice();
+		BeanUtils.copyProperties(invoiceDTO, invoice);
+		List<InvoiceProductDTO> invoiceProductsDTO = invoiceDTO.getInvoiceProducts();
+		if (invoiceProductsDTO != null && invoiceProductsDTO.size() > 0) {
+			List<InvoiceProduct> invoiceProducts = invoiceProductsDTO.parallelStream().map(InvoiceProduct::fromDTO).collect(Collectors.toList());
+			invoice.setInvoiceProducts(invoiceProducts);
+		}
+		return invoice;
+	}
 }

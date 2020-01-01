@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.ProviderDTO;
+
 @Entity
 @Table(name = "provider")
 @NamedQuery(name = "Provider.findAll", query = "SELECT a FROM Provider a")
@@ -54,6 +58,16 @@ public class Provider implements Serializable {
 	}
 	public void setConsultantNumber(String consultantNumber) {
 		this.consultantNumber = consultantNumber;
+	}
+	public static Provider fromDTO(ProviderDTO providerDTO) {
+		Provider provider = new Provider();
+		BeanUtils.copyProperties(providerDTO, provider);
+		return provider;
+	}
+	public ProviderDTO toDTO() {
+		ProviderDTO providerDTO = new ProviderDTO();
+		BeanUtils.copyProperties(this, providerDTO);
+		return providerDTO;
 	}
 	
 }
