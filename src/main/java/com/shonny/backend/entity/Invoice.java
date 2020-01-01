@@ -44,11 +44,11 @@ public class Invoice implements Serializable {
 	@Column(nullable = false)
 	private Date date;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_provider" , nullable = false)
 	private Provider provider;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, mappedBy = "invoice")
 	private List<InvoiceProduct> invoiceProducts;
 
 	public Long getId() {
@@ -94,17 +94,34 @@ public class Invoice implements Serializable {
 	public InvoiceDTO toDTO() {
 		InvoiceDTO invoiceDTO = new InvoiceDTO();
 		BeanUtils.copyProperties(this, invoiceDTO);
+		if (provider != null) {
+			invoiceDTO.setProvider(provider.toDTO());
+		}
+		loadListsDTO(this, invoiceDTO);
 		return invoiceDTO;
 	}
 
 	public static Invoice fromDTO(InvoiceDTO invoiceDTO) {
 		Invoice invoice = new Invoice();
 		BeanUtils.copyProperties(invoiceDTO, invoice);
+		if (invoiceDTO.getProvider() != null) {
+			invoice.setProvider(Provider.fromDTO(invoiceDTO.getProvider()));
+		}
 		List<InvoiceProductDTO> invoiceProductsDTO = invoiceDTO.getInvoiceProducts();
 		if (invoiceProductsDTO != null && invoiceProductsDTO.size() > 0) {
 			List<InvoiceProduct> invoiceProducts = invoiceProductsDTO.parallelStream().map(InvoiceProduct::fromDTO).collect(Collectors.toList());
 			invoice.setInvoiceProducts(invoiceProducts);
 		}
 		return invoice;
+	}
+	
+	public static void loadListsDTO(Invoice invoice, InvoiceDTO invoiceDTO) {
+		if (invoice.getInvoiceProducts() != null) {
+			List<InvoiceProductDTO> invoiceProducts = invoice.getInvoiceProducts()
+					.parallelStream()
+					.map(InvoiceProduct::toDTO)
+					.collect(Collectors.toList());
+			invoiceDTO.setInvoiceProducts(invoiceProducts);
+		}
 	}
 }

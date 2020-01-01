@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shonny.backend.entity.Product;
 import com.shonny.backend.model.ProductDTO;
@@ -44,6 +45,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteProduct(Long id) {
 		Product product = new Product();
 		product.setId(id);
@@ -51,6 +53,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+	@Transactional
 	public ProductDTO saveProduct(ProductDTO productDTO) throws Exception {
 		if (productDTO.getPrice() < productDTO.getBuyPrice()) {
 			throw new Exception("El precio de venta no puede ser menor al precio de compra");

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shonny.backend.model.BrandDTO;
@@ -35,13 +34,8 @@ public class BrandController {
 	}
 
 	@GetMapping(path="/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<BrandDTO>> findBrands(
-			@RequestParam(required = false) final String sort,
-			@RequestParam(required = false) final String order, 
-			@RequestParam(required = false) final Integer page, 
-			@RequestParam(required = false) final Integer pageSize,
-			@RequestParam(required = false) final String search) {
-		return new ResponseEntity<>(service.findBrands(sort, order, pageSize, page, search), HttpStatus.OK);
+	public ResponseEntity<List<BrandDTO>> findBrands() {
+		return new ResponseEntity<>(service.findBrands(), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

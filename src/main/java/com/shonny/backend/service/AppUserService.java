@@ -71,7 +71,7 @@ public class AppUserService implements IAppUserService {
 		if (!Utils.passwordsMatch(user.getPassword(), foundUser.getPassword())) {
 			throw new Exception("El nombre de usuario o contraseña son incorrectos.");
 		}
-
+		foundUser.setPassword(null);
 		return foundUser.toDTO();
 	}
 	

@@ -27,12 +27,12 @@ public class InvoiceProduct implements Serializable {
     InvoiceProductKey id;
     
     @MapsId("id_invoice")
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(cascade = {CascadeType.REMOVE})
 	@JoinColumn(name = "id_invoice")
 	private Invoice invoice;
 	
     @MapsId("id_product")
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_product", nullable = false)
 	private Product product;
     
@@ -88,6 +88,21 @@ public class InvoiceProduct implements Serializable {
 		if (invoiceProductoDTO.getId() != null) {
 			invoiceProduct.setId(InvoiceProductKey.fromDTO(invoiceProductoDTO.getId()));
 		}
+		if (invoiceProductoDTO.getInvoice() != null) {
+			invoiceProduct.setInvoice(Invoice.fromDTO(invoiceProductoDTO.getInvoice()));
+		}
+		if (invoiceProductoDTO.getProduct() != null) {
+			invoiceProduct.setProduct(Product.fromDTO(invoiceProductoDTO.getProduct()));
+		}
 		return invoiceProduct;
+	}
+	
+	public InvoiceProductDTO toDTO() {
+		InvoiceProductDTO invoiceProductDTO = new InvoiceProductDTO();
+		BeanUtils.copyProperties(this, invoiceProductDTO);
+		if (id != null) {
+			invoiceProductDTO.setId(id.toDTO());
+		}
+		return invoiceProductDTO;
 	}
 }

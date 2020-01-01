@@ -6,12 +6,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.util.StringUtils;
 
 import com.shonny.backend.entity.Brand;
 import com.shonny.backend.model.BrandDTO;
@@ -23,27 +20,10 @@ public class BrandService implements IBrandService {
 	private IBrandRepository repository;
 	
 	@Override
-	public List<BrandDTO> findBrands(String sort, String order, Integer pageSize, Integer page, String search) {
-		List<Brand> brands = null;
-
-		if (sort == null) {
-			Sort sortBy = Sort.by("name").ascending();
-			brands = StreamSupport.stream(repository.findAll(sortBy).spliterator(), false)
+	public List<BrandDTO> findBrands() {
+		Sort sortBy = Sort.by("name").ascending();
+		List<Brand> brands = StreamSupport.stream(repository.findAll(sortBy).spliterator(), false)
 				    .collect(Collectors.toList());
-		} else {
-			Sort sortBy = Sort.by(sort);
-			if ("1".equals(order)) {
-				sortBy.descending();
-			}
-			Pageable pageable = PageRequest.of(page, pageSize, sortBy);
-
-			if (StringUtils.isEmpty(search)) {
-				brands= repository.findAll(pageable).toList();
-			} else {
-				brands = repository.findAllByNameIgnoreCase(search, pageable);
-			}
-		}
-
 		return brands.parallelStream().map(Brand::toDTO).collect(Collectors.toList());
 	}
 	

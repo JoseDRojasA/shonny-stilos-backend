@@ -39,4 +39,10 @@ public class InvoiceProductKey implements Serializable {
 		BeanUtils.copyProperties(invoiceProductoKeyDTO, invoiceProductKey);
 		return invoiceProductKey;
 	}
+
+	public InvoiceProductKeyDTO toDTO() {
+		InvoiceProductKeyDTO invoiceProductKeyDTO = new InvoiceProductKeyDTO();
+		BeanUtils.copyProperties(this, invoiceProductKeyDTO);
+		return invoiceProductKeyDTO;
+	}
 }

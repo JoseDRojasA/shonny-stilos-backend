@@ -5,6 +5,9 @@ public class InvoiceProductDTO {
 	private Long buyPricePerUnit;
 	private Long pricePerUnit;
 	private Integer amount;
+	private ProductDTO product;
+	private InvoiceDTO invoice;
+	
 	public InvoiceProductKeyDTO getId() {
 		return id;
 	}
@@ -29,4 +32,17 @@ public class InvoiceProductDTO {
 	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
+	public ProductDTO getProduct() {
+		return product;
+	}
+	public void setProduct(ProductDTO product) {
+		this.product = product;
+	}
+	public InvoiceDTO getInvoice() {
+		return invoice;
+	}
+	public void setInvoice(InvoiceDTO invoice) {
+		this.invoice = invoice;
+	}
+
 }

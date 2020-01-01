@@ -29,19 +29,20 @@ public class InvoiceController {
 	private IInvoiceService service;
 	
 	@GetMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<InvoiceDTO> findInvoiceById(@PathVariable final Integer id) {
-		return new ResponseEntity<>(service.findInvoiceById(id), HttpStatus.OK);
+	public ResponseEntity<InvoiceDTO> findInvoiceById(@PathVariable final Long id) {
+		InvoiceDTO invoiceDTO = service.findInvoiceById(id);
+		return new ResponseEntity<>(invoiceDTO, HttpStatus.OK);
 	}
 
 	
 	@GetMapping(path="/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<InvoiceDTO>> findInvoice(
+	public ResponseEntity<List<InvoiceDTO>> findInvoices(
 			@RequestParam(required = false) final String sort,
 			@RequestParam(required = false) final String order, 
 			@RequestParam(required = false) final Integer page, 
 			@RequestParam(required = false) final Integer pageSize,
 			@RequestParam(required = false) final String search) {
-		return new ResponseEntity<List<InvoiceDTO>>(service.findInvoice(sort, order, pageSize, page, search), HttpStatus.OK);
+		return new ResponseEntity<List<InvoiceDTO>>(service.findInvoices(sort, order, pageSize, page, search), HttpStatus.OK);
 	}
 	
 	
@@ -51,7 +52,7 @@ public class InvoiceController {
 	}
 	
 	@DeleteMapping(path="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO> deleteInvoice(@PathVariable final Integer id) {
+	public ResponseEntity<ResponseDTO> deleteInvoice(@PathVariable final Long id) {
 		service.deleteInvoice(id);
 		ResponseDTO response = new ResponseDTO();
 		response.setSucessful(true);
