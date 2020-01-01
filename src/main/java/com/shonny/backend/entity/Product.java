@@ -16,6 +16,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
+import com.shonny.backend.model.ProductDTO;
+
 @Entity
 @Table(name = "product")
 @NamedQuery(name = "Product.findAll", query = "SELECT a FROM Product a")
@@ -124,4 +128,17 @@ public class Product implements Serializable {
 	public void setBrand(Brand brand) {
 		this.brand = brand;
 	}
+	
+	public ProductDTO toDTO() {
+		ProductDTO productDTO = new ProductDTO();
+		BeanUtils.copyProperties(this, productDTO);
+		return productDTO;
+	}
+	
+	public static Product fromDTO(ProductDTO productDTO) {
+		Product product = new Product();
+		BeanUtils.copyProperties(productDTO, product);
+		return product;
+	}
 }
+
