@@ -47,7 +47,7 @@ public class Sale implements Serializable  {
 	@JoinColumn(name = "id_client")
 	private Client client;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, mappedBy = "sale")
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH}, mappedBy = "sale")
 	private List<SaleProduct> saleProducts;
 	
 	public Long getId() {

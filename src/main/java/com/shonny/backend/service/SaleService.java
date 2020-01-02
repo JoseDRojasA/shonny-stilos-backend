@@ -74,13 +74,14 @@ public class SaleService implements ISaleService {
 			deleteSaleInventory(saleDTO.getId());
 		}
 		Sale sale = Sale.fromDTO(saleDTO);
-		repository.save(sale);
-		sale.getSaleProducts().parallelStream().forEach(saleProduct -> {
+		repository.saveAndFlush(sale);
+		sale.getSaleProducts().stream().forEach(saleProduct -> {
 			if (saleProduct.getId() == null) {
 				saleProduct.setId(new SaleProductKey());
 				saleProduct.getId().setSale(sale.getId());
 				saleProduct.getId().setProduct(saleProduct.getProduct().getId());
 			}
+			saleProduct.setSale(sale);
 			saleProductRepository.save(saleProduct);
 		});
 		repository.addSaleProductsInventory(sale.getId());

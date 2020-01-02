@@ -48,7 +48,7 @@ public class Invoice implements Serializable {
 	@JoinColumn(name = "id_provider" , nullable = false)
 	private Provider provider;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, mappedBy = "invoice")
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH}, mappedBy = "invoice")
 	private List<InvoiceProduct> invoiceProducts;
 
 	public Long getId() {

@@ -77,13 +77,14 @@ public class InvoiceService implements IInvoiceService {
 			deleteInvoiceInventory(invoiceDTO.getId());
 		}
 		Invoice invoice = Invoice.fromDTO(invoiceDTO);
-		repository.save(invoice);
-		invoice.getInvoiceProducts().parallelStream().forEach(invoiceProducts -> {
+		repository.saveAndFlush(invoice);
+		invoice.getInvoiceProducts().stream().forEach(invoiceProducts -> {
 			if (invoiceProducts.getId() == null) {
 				invoiceProducts.setId(new InvoiceProductKey());
 				invoiceProducts.getId().setInvoice(invoice.getId());
 				invoiceProducts.getId().setProduct(invoiceProducts.getProduct().getId());
 			}
+			invoiceProducts.setInvoice(invoice);
 			invoiceProductRepository.save(invoiceProducts);
 		});
 		repository.addInvoiceProductsInventory(invoice.getId());

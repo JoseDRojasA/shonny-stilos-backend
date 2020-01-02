@@ -27,7 +27,7 @@ public class InvoiceProduct implements Serializable {
     InvoiceProductKey id;
     
     @MapsId("id_invoice")
-	@ManyToOne(cascade = {CascadeType.REMOVE})
+	@ManyToOne(cascade = {CascadeType.DETACH})
 	@JoinColumn(name = "id_invoice")
 	private Invoice invoice;
 	
