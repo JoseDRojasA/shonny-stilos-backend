@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PaginationDTO {
 	private List<Object> elements;
-	private Integer count;
+	private Long count;
 	
 	public List<Object> getElements() {
 		return elements;
@@ -12,10 +12,10 @@ public class PaginationDTO {
 	public void setElements(List<Object> elements) {
 		this.elements = elements;
 	}
-	public Integer getCount() {
+	public Long getCount() {
 		return count;
 	}
-	public void setCount(Integer count) {
+	public void setCount(Long count) {
 		this.count = count;
 	}
 	

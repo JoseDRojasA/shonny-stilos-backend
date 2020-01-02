@@ -32,10 +32,10 @@ public class InvoiceService implements IInvoiceService {
 		PaginationDTO pagination = new PaginationDTO();
 		Page<Invoice> invoices;
 		Sort sortBy = Sort.by(sort).descending();
-		if ("1".equals(order)) {
+		if ("asc".equals(order)) {
 			sortBy = sortBy.ascending();
 		}
-		Pageable pageable = PageRequest.of(page - 1, pageSize, sortBy);
+		Pageable pageable = PageRequest.of(page, pageSize, sortBy);
 
 		if (StringUtils.isEmpty(search)) {
 			invoices= repository.findAll(pageable);
@@ -43,7 +43,7 @@ public class InvoiceService implements IInvoiceService {
 			invoices = repository.findAllBySearch(search, pageable);
 		}
 		pagination.setElements(invoices.toList().parallelStream().map(Invoice::toDTO).collect(Collectors.toList()));
-		pagination.setCount(invoices.getNumberOfElements());
+		pagination.setCount(invoices.getTotalElements());
 		return pagination;
 	}
 

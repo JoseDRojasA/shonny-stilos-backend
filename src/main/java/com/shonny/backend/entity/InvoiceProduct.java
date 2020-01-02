@@ -39,9 +39,6 @@ public class InvoiceProduct implements Serializable {
 	@Column(name = "buy_price_per_unit", nullable = false)
 	private Long buyPricePerUnit;
 	
-	@Column(name = "price_per_unit", nullable = false)
-	private Long pricePerUnit;
-	
 	@Column(name = "amount", nullable = false)
 	private Integer amount;
 	
@@ -57,12 +54,7 @@ public class InvoiceProduct implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	public Long getPricePerUnit() {
-		return pricePerUnit;
-	}
-	public void setPricePerUnit(Long pricePerUnit) {
-		this.pricePerUnit = pricePerUnit;
-	}
+	
 	public Integer getAmount() {
 		return amount;
 	}
